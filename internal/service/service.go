@@ -38,7 +38,7 @@ func (s *Service) SayHello(ctx context.Context, req *pb.HelloReq) (reply *empty.
 	return
 }
 
-// SayHelloURL bm demo func.
+// SayHelloURL bm demo func.这里是后台控制台打印的内容
 func (s *Service) SayHelloURL(ctx context.Context, req *pb.HelloReq) (reply *pb.HelloResp, err error) {
 	reply = &pb.HelloResp{
 		Content: "hello " + req.Name,

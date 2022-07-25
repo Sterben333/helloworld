@@ -19,6 +19,7 @@ func New(s *service.Service) (engine *bm.Engine, err error) {
 		cfg bm.ServerConfig
 		ct  paladin.TOML
 	)
+	//日志处理，监听处理
 	if err = paladin.Get("http.toml").Unmarshal(&ct); err != nil {
 		return
 	}
@@ -33,6 +34,7 @@ func New(s *service.Service) (engine *bm.Engine, err error) {
 	return
 }
 
+//访问地址
 func initRouter(e *bm.Engine) {
 	e.Ping(ping)
 	g := e.Group("/helloworld")
@@ -48,10 +50,11 @@ func ping(ctx *bm.Context) {
 	}
 }
 
-// example for http request handler.
+// example for http request handler.主要改这个部分，启动起来这个部分就是显示在前端的内容
 func howToStart(c *bm.Context) {
 	k := &model.Kratos{
-		Hello: "Hello Kratos!",
+		Id:    1,
+		Title: "good",
 	}
 	c.JSON(k, nil)
 }
