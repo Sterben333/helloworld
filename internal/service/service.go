@@ -15,13 +15,13 @@ import (
 
 var Provider = wire.NewSet(New, wire.Bind(new(pb.DemoServer), new(*Service)))
 
-// Service service.
+// Service .
 type Service struct {
 	ac  *paladin.Map //paladin.Map 通过atomic.Value支持自动热加载
 	dao dao.Dao
 }
 
-// New new a service and return.
+// New 新建 a service and return.
 func New(d dao.Dao) (s *Service, cf func(), err error) {
 	s = &Service{
 		ac:  &paladin.TOML{},
@@ -35,20 +35,20 @@ func New(d dao.Dao) (s *Service, cf func(), err error) {
 // SayHello grpc demo func.
 func (s *Service) SayHello(ctx context.Context, req *pb.HelloReq) (reply *empty.Empty, err error) {
 	reply = new(empty.Empty)
-	fmt.Printf("hello %s", req.Name)
+	fmt.Printf("我是hello %s", req.Name) // 控制台打印
 	return
 }
 
 // SayHelloURL bm demo func.这里是后台控制台打印的内容
 func (s *Service) SayHelloURL(ctx context.Context, req *pb.HelloReq) (reply *pb.HelloResp, err error) {
 	reply = &pb.HelloResp{
-		Content: "妈勒个巴子，你好啊 " + req.Name,
+		Content: "你好啊小可爱 " + req.Name,
 	}
-	fmt.Printf("hello url %s", req.Name)
+	fmt.Printf("我是hello-url %s", req.Name)
 	return
 }
 
-// 新增登录接口
+// Login 新增登录接口
 func (s *Service) Login(ctx context.Context, req *pb.LoginReq) (reply *pb.LoginResp, err error) {
 	reply = &pb.LoginResp{
 		Content: "login:" + req.Username + ", passwd: " + req.Passwd,
@@ -57,7 +57,7 @@ func (s *Service) Login(ctx context.Context, req *pb.LoginReq) (reply *pb.LoginR
 	return
 }
 
-//添加用户
+// AddUser 添加用户
 func (s *Service) AddUser(ctx context.Context, req *pb.AddReq) (reply *pb.Response, err error) {
 	fmt.Printf("AddUser: %s, %d", req.Nickname, req.Age)
 	user, err := s.dao.AddUser(ctx, req.Nickname, req.Age)
@@ -72,7 +72,7 @@ func (s *Service) AddUser(ctx context.Context, req *pb.AddReq) (reply *pb.Respon
 	return
 }
 
-//更新用户信息
+// UpdateUser 更新用户信息
 func (s *Service) UpdateUser(ctx context.Context, req *pb.UpdateReq) (reply *pb.Response, err error) {
 	fmt.Printf("UpdateUser: %s, %d", req.Nickname, req.Age)
 	rows, err := s.dao.UpdateUser(ctx, req.Uid, req.Nickname, req.Age)
