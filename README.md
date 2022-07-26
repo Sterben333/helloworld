@@ -33,6 +33,10 @@ mysql
 
    访问：```http://localhost:8000/metadata```
 
+7. Protobuf查看
+
+   访问：```http://localhost:8000/helloworld/say_hello?name=Soul```
+
 ## 目录结构描述
 
 ```
@@ -71,9 +75,9 @@ mysql
 
 
 
-## V1.0 版本内容更新
+## V1.0 版本内容更新2022.7.26
 
-1. ```Internal/server/http/server.go```文件夹下增加了一个handler方法showParam
+1. ```Internal/server/http/server.go```文件下增加了一个handler方法showParam
 
    打开浏览器访问：```http://localhost:8000/httpdemo/param2/Soul/male/hello```
 
@@ -91,4 +95,68 @@ mysql
    }
    ```
 
+2. ```api/api/proto```文件下增加了自定义接口Login、AddUser、UpdateUser、GetUser、GetUserList。相应的```inernal/service/service.go```也需要添加相应的方法
+
+   - 更新之后要生成新的pb.go文件需要执行以下命令
+
+     ``` bash
+     cd helloworld/api
+     kratos tool protoc #生成新的pb.go文件
+     cd helloworld/internal/di
+     go generate #生成新的go接口，其实也不用自己来，启动项目的时候它会自动执行go generate
+     ```
+
+   - 打开浏览器访问：```http://localhost:8000/user/login?username=Soul&passwd=111111```
+
+   - 输出内容：
+
+     ```bash
+     {
+         "code": 0,
+         "message": "0",
+         "ttl": 1,
+         "data": {
+             "content": "login:Soul, passwd: 111111"
+         }
+     }
+     ```
+
+3. 修改了```configs/mysql/toml```中的内容、创建了测试数据库，数据库内容如下：
+
+   ```sql
+   create database kratos_demo;
+   use kratos_demo;
    
+   CREATE TABLE `users` (
+     `uid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `nickname` varchar(100) NOT NULL DEFAULT '' COMMENT '昵称',
+     `age` smallint(5) unsigned NOT NULL COMMENT '年龄',
+     `uptime` int(10) unsigned NOT NULL DEFAULT '0',
+     `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+     PRIMARY KEY (`uid`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+   ```
+
+   在```model/model.go```中添加了结构体```User```
+
+   在```dao/dao.go```中新增了四个接口
+
+   创建了文件```dao/dao.user.go```，实现了四个接口
+
+   在```api/api.proto```中增加了http接口
+
+   在```internal/service/service.go```，增加了接口实现
+
+   - 完成上述内容后，重新生成pd文件
+
+     ```bash
+     cd helloworld
+     kratos tool protoc
+     ```
+
+   - 打开浏览器：
+
+     - 添加用户：```http://localhost:8000/adduser?nickname=soul&age=22```
+     - 更新用户：```http://localhost:8000/updateuser?uid=3&nickname=soul&age=22```
+     - 获取单个用户信息：```http://localhost:8000/getuser?uid=3```
+     - 获取用户列表：```http://localhost:8000/getuserlist```

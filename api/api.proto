@@ -24,10 +24,12 @@ service Demo {//请求，远程调用
   rpc Ping(.google.protobuf.Empty) returns (.google.protobuf.Empty);
   rpc SayHello(HelloReq) returns (.google.protobuf.Empty);
   rpc SayHelloURL(HelloReq) returns (HelloResp) {
-    option (google.api.http) = {
-      get: "/kratos-demo/say_hello"
+    option (google.api.http) = {// 该配置指定SayHelloURL方法对应的url
+      get: "/kratos-demo/say_hello"// 指定url和请求方式为GET
     };
   };
+
+  //----------------------------自定义接口-------------------//
   //新增登录服务接口
   rpc Login(LoginReq) returns (LoginResp) {
     option (google.api.http) = {
@@ -67,6 +69,8 @@ message HelloResp {
   string Content = 1 [(gogoproto.jsontag) = 'content'];
 }
 
+
+//--------------------自定义message--------------------------//
 message LoginReq {
   string username = 1 [(gogoproto.moretags) = 'form:"username" validate:"required"']; //form-表单username
   string passwd = 2 [(gogoproto.moretags) = 'form:"passwd" validate:"required"']; //form-表单passwd
