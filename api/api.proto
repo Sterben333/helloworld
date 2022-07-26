@@ -11,11 +11,16 @@ import "google/api/annotations.proto";
 package demo.service.v1;
 
 // NOTE: 最后请删除这些无用的注释 (゜-゜)つロ
-
-option go_package = "api";
+// protobuf定义了一种后缀名为“.proto”的描述型文件为待传输的结构化数据作为数据协议，
+// 待传输的数据必须符合“.proto”文件中的相关定义。“.proto”文件在简洁易读的同时很好地保留了原数据的结构信息，
+// 并且还给出了一些实用的关键字，灵活地让开发者对数据中的字段做选取，给了开发人员很大的发挥空间，
+// 基本解决了其他协议出现的被需求牵着走的局面。“.proto”文件可以看作一种数据传输的协议，需要开发人员按照语法编写
+option go_package = "api";// 经过protoc --go_out=. *.proto指令之后希望放在的文件夹
 option (gogoproto.goproto_getters_all) = false;
 
-service Demo {
+// 定义服务接口
+service Demo {//请求，远程调用
+  // google.protobuf.Empty返回空参
   rpc Ping(.google.protobuf.Empty) returns (.google.protobuf.Empty);
   rpc SayHello(HelloReq) returns (.google.protobuf.Empty);
   rpc SayHelloURL(HelloReq) returns (HelloResp) {
@@ -23,12 +28,70 @@ service Demo {
       get: "/kratos-demo/say_hello"
     };
   };
+  //新增登录服务接口
+  rpc Login(LoginReq) returns (LoginResp) {
+    option (google.api.http) = {
+      get: "/user/login"
+    };
+  };
+
+  rpc AddUser(AddReq) returns (Response) {
+    option (google.api.http) = {
+      get: "/adduser"
+    };
+  };
+  rpc UpdateUser(UpdateReq) returns (Response) {
+    option (google.api.http) = {
+      get: "/updateuser"
+    };
+  };
+  rpc GetUser(GetReq) returns (Response) {
+    option (google.api.http) = {
+      get: "/getuser"
+    };
+  };
+  rpc GetUserList(.google.protobuf.Empty) returns (Response) {
+    option (google.api.http) = {
+      get: "/getuserlist"
+    };
+  };
 }
 
+//定义请求参数
 message HelloReq {
   string name = 1 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
 }
 
+//定义响应参数
 message HelloResp {
+  string Content = 1 [(gogoproto.jsontag) = 'content'];
+}
+
+message LoginReq {
+  string username = 1 [(gogoproto.moretags) = 'form:"username" validate:"required"']; //form-表单username
+  string passwd = 2 [(gogoproto.moretags) = 'form:"passwd" validate:"required"']; //form-表单passwd
+}
+
+//新增登录接口响应参数
+message LoginResp {
+  string Content = 1 [(gogoproto.jsontag) = 'content'];
+}
+
+message AddReq {
+  string nickname = 1 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
+  int32 age = 2 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
+}
+
+message UpdateReq {
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
+  string nickname = 2 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
+  int32 age = 3 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
+}
+
+message GetReq {
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
+}
+
+message Response {
   string Content = 1 [(gogoproto.jsontag) = 'content'];
 }

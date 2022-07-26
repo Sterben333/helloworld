@@ -13,12 +13,14 @@ func NewDB() (db *sql.DB, cf func(), err error) {
 		cfg sql.Config
 		ct  paladin.TOML
 	)
+	//读取配置文件
 	if err = paladin.Get("db.toml").Unmarshal(&ct); err != nil {
 		return
 	}
 	if err = ct.Get("Client").UnmarshalTOML(&cfg); err != nil {
 		return
 	}
+	//使用NewMySQL方法进行连接池对象的初始化
 	db = sql.NewMySQL(&cfg)
 	cf = func() { db.Close() }
 	return

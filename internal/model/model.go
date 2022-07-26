@@ -11,3 +11,11 @@ type Article struct {
 	Content string
 	Author  string
 }
+
+type User struct {
+	Uid      int64
+	Nickname string
+	Age      int32
+	Uptime   int32
+	Addtime  int32
+}

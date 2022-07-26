@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"go-common/library/conf/paladin.v2"
@@ -16,7 +17,7 @@ var Provider = wire.NewSet(New, wire.Bind(new(pb.DemoServer), new(*Service)))
 
 // Service service.
 type Service struct {
-	ac  *paladin.Map
+	ac  *paladin.Map //paladin.Map 通过atomic.Value支持自动热加载
 	dao dao.Dao
 }
 
@@ -41,9 +42,77 @@ func (s *Service) SayHello(ctx context.Context, req *pb.HelloReq) (reply *empty.
 // SayHelloURL bm demo func.这里是后台控制台打印的内容
 func (s *Service) SayHelloURL(ctx context.Context, req *pb.HelloReq) (reply *pb.HelloResp, err error) {
 	reply = &pb.HelloResp{
-		Content: "hello " + req.Name,
+		Content: "妈勒个巴子，你好啊 " + req.Name,
 	}
 	fmt.Printf("hello url %s", req.Name)
+	return
+}
+
+// 新增登录接口
+func (s *Service) Login(ctx context.Context, req *pb.LoginReq) (reply *pb.LoginResp, err error) {
+	reply = &pb.LoginResp{
+		Content: "login:" + req.Username + ", passwd: " + req.Passwd,
+	}
+	fmt.Printf("login url %s", req.Username)
+	return
+}
+
+//添加用户
+func (s *Service) AddUser(ctx context.Context, req *pb.AddReq) (reply *pb.Response, err error) {
+	fmt.Printf("AddUser: %s, %d", req.Nickname, req.Age)
+	user, err := s.dao.AddUser(ctx, req.Nickname, req.Age)
+	if err != nil {
+		fmt.Printf("AddUser %s, %d Error", req.Nickname, req.Age)
+		return
+	}
+	res, _ := json.Marshal(user)
+	reply = &pb.Response{
+		Content: string(res),
+	}
+	return
+}
+
+//更新用户信息
+func (s *Service) UpdateUser(ctx context.Context, req *pb.UpdateReq) (reply *pb.Response, err error) {
+	fmt.Printf("UpdateUser: %s, %d", req.Nickname, req.Age)
+	rows, err := s.dao.UpdateUser(ctx, req.Uid, req.Nickname, req.Age)
+	if err != nil {
+		fmt.Printf("UpdateUser %s, %d Error", req.Nickname, req.Age)
+		return
+	}
+	reply = &pb.Response{
+		Content: fmt.Sprintf("更新行数: %d", rows),
+	}
+	return
+}
+
+//获取用户信息
+func (s *Service) GetUser(ctx context.Context, req *pb.GetReq) (reply *pb.Response, err error) {
+	fmt.Printf("GetUser: %d", req.Uid)
+	user, err := s.dao.GetUser(ctx, req.Uid)
+	if err != nil {
+		fmt.Printf("GetUser %s Error", req.Uid)
+		return
+	}
+	res, _ := json.Marshal(user)
+	reply = &pb.Response{
+		Content: string(res),
+	}
+	return
+}
+
+//获取用户列表
+func (s *Service) GetUserList(ctx context.Context, req *empty.Empty) (reply *pb.Response, err error) {
+	fmt.Printf("GetUserList")
+	userlist, err := s.dao.GetUserList(ctx)
+	if err != nil {
+		fmt.Printf("GetUserList Error")
+		return
+	}
+	res, _ := json.Marshal(userlist)
+	reply = &pb.Response{
+		Content: string(res),
+	}
 	return
 }
 
