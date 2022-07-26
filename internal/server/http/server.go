@@ -53,6 +53,7 @@ func initRouter(e *bm.Engine) {
 		// NOTE: 如/params3/soul/hello/hi，action的值为"/hello/hi"
 		// NOTE: 如/params3/soul/hello/hi/，action的值为"/hello/hi/"
 		g.GET("/param3/:name/*action", showParam)
+		g.POST("/param4/:name/:gender/:say", showParam1)
 	}
 }
 
@@ -68,6 +69,17 @@ func showParam(c *bm.Context) {
 		"say":    say,
 		"action": action,
 		"path":   path,
+	}, nil)
+}
+
+func showParam1(c *bm.Context) {
+	name, _ := c.Params.Get("name")
+	gender, _ := c.Params.Get("gender")
+	say, _ := c.Params.Get("say")
+	path := c.RoutePath // NOTE: 获取注册的路由原始地址，如: /httpdemo/param1/:name
+	out := name + "同学，性别：" + gender + "他说" + say + "。他的路由原始地址为：" + path
+	c.JSONMap(map[string]interface{}{
+		"say": out,
 	}, nil)
 }
 

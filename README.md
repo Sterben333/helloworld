@@ -6,11 +6,11 @@ mysql
 ## 部署步骤
 
 1. Environment
-    
+   
     ```LOG_NO_AGENT=true;DEPLOY_ENV=uat```
     
 1. Program arguments
-    
+   
     ```-conf=./configs```
 
 3. 安装kratos
@@ -157,6 +157,7 @@ mysql
    - 打开浏览器：
 
      - 添加用户：```http://localhost:8000/adduser?nickname=soul&age=22```
+     - 删除用户：```https://localhost:8000/deleteuser?uid=3```
      - 更新用户：```http://localhost:8000/updateuser?uid=3&nickname=soul&age=22```
      - 获取单个用户信息：```http://localhost:8000/getuser?uid=3```
      - 获取用户列表：```http://localhost:8000/getuserlist```

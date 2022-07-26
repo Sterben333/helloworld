@@ -29,6 +29,20 @@ func (d *dao) AddUser(c context.Context, nickname string, age int32) (user *mode
 	return user, nil
 }
 
+//DeleteUser 更新用户信息
+func (d *dao) DeleteUser(c context.Context, uid int64) (row int64, err error) {
+	deleteSql := fmt.Sprintf("DELETE FROM `users` WHERE uid=?;")
+
+	res, err := d.db.Exec(c, deleteSql, uid)
+	if err != nil {
+		log.Error("db.Exec(%s) error(%v)", deleteSql, err)
+		return 0, err
+	}
+
+	row, err = res.RowsAffected()
+	return row, nil
+}
+
 //UpdateUser 更新用户信息
 func (d *dao) UpdateUser(c context.Context, uid int64, nickname string, age int32) (row int64, err error) {
 	querySql := fmt.Sprintf("UPDATE `users` SET nickname=?,age=?,uptime=? WHERE uid=?;")

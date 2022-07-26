@@ -72,6 +72,20 @@ func (s *Service) AddUser(ctx context.Context, req *pb.AddReq) (reply *pb.Respon
 	return
 }
 
+// DeleteUser 更新用户信息
+func (s *Service) DeleteUser(ctx context.Context, req *pb.DeleteReq) (reply *pb.Response, err error) {
+	fmt.Printf("DeleteUser:  %d", req.Uid)
+	rows, err := s.dao.DeleteUser(ctx, req.Uid)
+	if err != nil {
+		fmt.Printf("DeleteUser Uid = %d Error", req.Uid)
+		return
+	}
+	reply = &pb.Response{
+		Content: fmt.Sprintf("删除行数: %d", rows),
+	}
+	return
+}
+
 // UpdateUser 更新用户信息
 func (s *Service) UpdateUser(ctx context.Context, req *pb.UpdateReq) (reply *pb.Response, err error) {
 	fmt.Printf("UpdateUser: %s, %d", req.Nickname, req.Age)
@@ -86,7 +100,7 @@ func (s *Service) UpdateUser(ctx context.Context, req *pb.UpdateReq) (reply *pb.
 	return
 }
 
-//获取用户信息
+//GetUser 获取用户信息
 func (s *Service) GetUser(ctx context.Context, req *pb.GetReq) (reply *pb.Response, err error) {
 	fmt.Printf("GetUser: %d", req.Uid)
 	user, err := s.dao.GetUser(ctx, req.Uid)
@@ -101,7 +115,7 @@ func (s *Service) GetUser(ctx context.Context, req *pb.GetReq) (reply *pb.Respon
 	return
 }
 
-//获取用户列表
+//GetUserList 获取用户列表
 func (s *Service) GetUserList(ctx context.Context, req *empty.Empty) (reply *pb.Response, err error) {
 	fmt.Printf("GetUserList")
 	userlist, err := s.dao.GetUserList(ctx)

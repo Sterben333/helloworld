@@ -18,7 +18,7 @@
     "paths": {
         "/adduser": {
             "get": {
-                "summary": "/adduser",
+                "summary": "增删改查",
                 "responses": {
                     "200": {
                         "description": "A successful response.",
@@ -47,6 +47,41 @@
                     },
                     {
                         "name": "age",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "demo.service.v1.Demo"
+                ]
+            }
+        },
+        "/deleteuser": {
+            "get": {
+                "summary": "/deleteuser",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.demo.service.v1.Response"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "uid",
                         "in": "query",
                         "required": true,
                         "type": "integer"
@@ -203,7 +238,8 @@
         },
         "/user/login": {
             "get": {
-                "summary": "新增登录服务接口",
+                "summary": "----------------------------自定义接口-------------------//",
+                "description": "新增登录服务接口",
                 "responses": {
                     "200": {
                         "description": "A successful response.",
@@ -254,9 +290,21 @@
                     "type": "integer"
                 }
             },
+            "description": "增删改查接口响应参数",
             "required": [
                 "nickname",
                 "age"
+            ]
+        },
+        ".demo.service.v1.DeleteReq": {
+            "type": "object",
+            "properties": {
+                "uid": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "uid"
             ]
         },
         ".demo.service.v1.GetReq": {
@@ -277,7 +325,7 @@
                     "type": "string"
                 }
             },
-            "description": "定义请求参数",
+            "description": "---------------------------------下面这个不是-----------------------------------------//\n定义请求参数",
             "required": [
                 "name"
             ]
@@ -301,6 +349,7 @@
                     "type": "string"
                 }
             },
+            "description": "--------------------自定义message--------------------------//",
             "required": [
                 "username",
                 "passwd"

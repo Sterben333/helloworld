@@ -37,9 +37,15 @@ service Demo {//请求，远程调用
     };
   };
 
+  //增删改查
   rpc AddUser(AddReq) returns (Response) {
     option (google.api.http) = {
       get: "/adduser"
+    };
+  };
+  rpc DeleteUser(DeleteReq) returns (Response) {
+    option (google.api.http) = {
+      get: "/deleteuser"
     };
   };
   rpc UpdateUser(UpdateReq) returns (Response) {
@@ -59,17 +65,6 @@ service Demo {//请求，远程调用
   };
 }
 
-//定义请求参数
-message HelloReq {
-  string name = 1 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
-}
-
-//定义响应参数
-message HelloResp {
-  string Content = 1 [(gogoproto.jsontag) = 'content'];
-}
-
-
 //--------------------自定义message--------------------------//
 message LoginReq {
   string username = 1 [(gogoproto.moretags) = 'form:"username" validate:"required"']; //form-表单username
@@ -81,6 +76,7 @@ message LoginResp {
   string Content = 1 [(gogoproto.jsontag) = 'content'];
 }
 
+//增删改查接口响应参数
 message AddReq {
   string nickname = 1 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
   int32 age = 2 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
@@ -92,6 +88,10 @@ message UpdateReq {
   int32 age = 3 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
 }
 
+message DeleteReq {
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
+}
+
 message GetReq {
   int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
 }
@@ -99,3 +99,16 @@ message GetReq {
 message Response {
   string Content = 1 [(gogoproto.jsontag) = 'content'];
 }
+
+// ---------------------------------下面这个不是-----------------------------------------//
+//定义请求参数
+message HelloReq {
+  string name = 1 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
+}
+
+//定义响应参数
+message HelloResp {
+  string Content = 1 [(gogoproto.jsontag) = 'content'];
+}
+
+

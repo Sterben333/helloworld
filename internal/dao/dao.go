@@ -27,6 +27,7 @@ type Dao interface {
 	Article(c context.Context, id int64) (*model.Article, error)
 	//新增接口
 	AddUser(c context.Context, nickname string, age int32) (user *model.User, err error)
+	DeleteUser(c context.Context, uid int64) (row int64, err error)
 	UpdateUser(c context.Context, uid int64, nickname string, age int32) (row int64, err error)
 	GetUser(c context.Context, uid int64) (user *model.User, err error)
 	GetUserList(c context.Context) (userlist []*model.User, err error)

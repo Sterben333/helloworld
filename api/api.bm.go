@@ -30,6 +30,7 @@ var PathDemoSayHello = "/demo.service.v1.Demo/SayHello"
 var PathDemoSayHelloURL = "/kratos-demo/say_hello"
 var PathDemoLogin = "/user/login"
 var PathDemoAddUser = "/adduser"
+var PathDemoDeleteUser = "/deleteuser"
 var PathDemoUpdateUser = "/updateuser"
 var PathDemoGetUser = "/getuser"
 var PathDemoGetUserList = "/getuserlist"
@@ -44,10 +45,14 @@ type DemoBMServer interface {
 
 	SayHelloURL(ctx context.Context, req *HelloReq) (resp *HelloResp, err error)
 
+	// ----------------------------自定义接口-------------------//
 	// 新增登录服务接口
 	Login(ctx context.Context, req *LoginReq) (resp *LoginResp, err error)
 
+	// 增删改查
 	AddUser(ctx context.Context, req *AddReq) (resp *Response, err error)
+
+	DeleteUser(ctx context.Context, req *DeleteReq) (resp *Response, err error)
 
 	UpdateUser(ctx context.Context, req *UpdateReq) (resp *Response, err error)
 
@@ -103,6 +108,15 @@ func demoAddUser(c *bm.Context) {
 	c.JSON(resp, err)
 }
 
+func demoDeleteUser(c *bm.Context) {
+	p := new(DeleteReq)
+	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
+		return
+	}
+	resp, err := DemoSvc.DeleteUser(c, p)
+	c.JSON(resp, err)
+}
+
 func demoUpdateUser(c *bm.Context) {
 	p := new(UpdateReq)
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
@@ -138,6 +152,7 @@ func RegisterDemoBMServer(e *bm.Engine, server DemoBMServer) {
 	e.GET("/kratos-demo/say_hello", demoSayHelloURL)
 	e.GET("/user/login", demoLogin)
 	e.GET("/adduser", demoAddUser)
+	e.GET("/deleteuser", demoDeleteUser)
 	e.GET("/updateuser", demoUpdateUser)
 	e.GET("/getuser", demoGetUser)
 	e.GET("/getuserlist", demoGetUserList)
