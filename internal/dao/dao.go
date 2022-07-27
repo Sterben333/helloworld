@@ -58,7 +58,7 @@ func newDao(r *redis.Redis, mc *memcache.Memcache, db *sql.DB) (d *dao, cf func(
 	}
 	d = &dao{
 		db:         db, //官方文档直接在这里初始化
-		redis:      r,
+		redis:      r,  //7月27日完成对redis对接入
 		mc:         mc,
 		cache:      fanout.New("cache"),
 		demoExpire: int32(time.Duration(cfg.DemoExpire) / time.Second),

@@ -1,7 +1,13 @@
 # HelloWorld
 
 ## 环境依赖
-mysql
+mysql5.7
+
+redis@latest
+
+Go1.18.4
+
+Kratos v1.0.52
 
 ## 部署步骤
 
@@ -157,7 +163,13 @@ mysql
    - 打开浏览器：
 
      - 添加用户：```http://localhost:8000/adduser?nickname=soul&age=22```
-     - 删除用户：```https://localhost:8000/deleteuser?uid=3```
+     - 删除用户：```http://localhost:8000/deleteuser?uid=3```
      - 更新用户：```http://localhost:8000/updateuser?uid=3&nickname=soul&age=22```
-     - 获取单个用户信息：```http://localhost:8000/getuser?uid=3```
-     - 获取用户列表：```http://localhost:8000/getuserlist```
+     - 查询单个用户：```http://localhost:8000/getuser?uid=3```
+     - 查询用户列表：```http://localhost:8000/getuserlist```
+
+## V1.1 版本内容更新2022.7.27
+
+1. 在增删改查上做了redis中间件的缓存处理，用来优化操作体验
+2. 考虑到更新和删除动作在多线程情况下可能会读取脏数据，本人采用延时双删的策略
+3. 对于查询用户列表的情况，因为这种情况操作不是很多，切数据量巨大，因此本人没有做redis的处理，直接请求数据库即可
