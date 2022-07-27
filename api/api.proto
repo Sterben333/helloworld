@@ -1,7 +1,7 @@
 // 定义项目 API 的 proto 文件 可以同时描述 gRPC 和 HTTP API
 // protobuf 文件参考:
 //  - https://developers.google.com/protocol-buffers/
-syntax = "proto3";
+syntax = "proto3"; //表明我们使用版本是 proto3
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/protobuf/empty.proto";
@@ -40,7 +40,7 @@ service Demo {//请求，远程调用
   //增删改查
   rpc AddUser(AddReq) returns (Response) {
     option (google.api.http) = {
-      get: "/adduser"
+      post: "/adduser"
     };
   };
   rpc DeleteUser(DeleteReq) returns (Response) {
@@ -50,12 +50,12 @@ service Demo {//请求，远程调用
   };
   rpc UpdateUser(UpdateReq) returns (Response) {
     option (google.api.http) = {
-      get: "/updateuser"
+      put: "/updateuser"
     };
   };
   rpc GetUser(GetReq) returns (Response) {
     option (google.api.http) = {
-      get: "/getuser"
+      put: "/getuser"
     };
   };
   rpc GetUserList(.google.protobuf.Empty) returns (Response) {
@@ -65,10 +65,15 @@ service Demo {//请求，远程调用
   };
 }
 
-//--------------------自定义message--------------------------//
+//--------------------自定义message：自定义验证器错误消息--------------------------//
+//-----jsontag
+//-----其他tag（moretags）
+        //-----form：
+        //-----validate：验证器
+                //------required：字段为必填项，值不能为空
 message LoginReq {
-  string username = 1 [(gogoproto.moretags) = 'form:"username" validate:"required"']; //form-表单username
-  string passwd = 2 [(gogoproto.moretags) = 'form:"passwd" validate:"required"']; //form-表单passwd
+  string username = 1 [(gogoproto.moretags) = 'form:"username" ']; //form-表单username
+  string passwd = 2 [(gogoproto.moretags) = 'form:"passwd" ']; //form-表单passwd
 }
 
 //新增登录接口响应参数
@@ -78,22 +83,22 @@ message LoginResp {
 
 //增删改查接口响应参数
 message AddReq {
-  string nickname = 1 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
-  int32 age = 2 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
+  string nickname = 1 [(gogoproto.moretags) = 'form:"nickname" '];
+  int32 age = 2 [(gogoproto.moretags) = 'form:"age" validate:'];
 }
 
 message UpdateReq {
-  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
-  string nickname = 2 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
-  int32 age = 3 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" '];
+  string nickname = 2 [(gogoproto.moretags) = 'form:"nickname" '];
+  int32 age = 3 [(gogoproto.moretags) = 'form:"age" '];
 }
 
 message DeleteReq {
-  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" '];
 }
 
 message GetReq {
-  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" '];
 }
 
 message Response {
@@ -103,7 +108,7 @@ message Response {
 // ---------------------------------下面这个不是-----------------------------------------//
 //定义请求参数
 message HelloReq {
-  string name = 1 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
+  string name = 1 [(gogoproto.moretags) = 'form:"name" '];
 }
 
 //定义响应参数

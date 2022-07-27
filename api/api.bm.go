@@ -151,9 +151,9 @@ func RegisterDemoBMServer(e *bm.Engine, server DemoBMServer) {
 	e.GET("/demo.service.v1.Demo/SayHello", demoSayHello)
 	e.GET("/kratos-demo/say_hello", demoSayHelloURL)
 	e.GET("/user/login", demoLogin)
-	e.GET("/adduser", demoAddUser)
+	e.POST("/adduser", demoAddUser)
 	e.GET("/deleteuser", demoDeleteUser)
-	e.GET("/updateuser", demoUpdateUser)
-	e.GET("/getuser", demoGetUser)
+	e.PUT("/updateuser", demoUpdateUser)
+	e.PUT("/getuser", demoGetUser)
 	e.GET("/getuserlist", demoGetUserList)
 }

@@ -59,7 +59,7 @@ func (s *Service) Login(ctx context.Context, req *pb.LoginReq) (reply *pb.LoginR
 
 // AddUser 添加用户
 func (s *Service) AddUser(ctx context.Context, req *pb.AddReq) (reply *pb.Response, err error) {
-	fmt.Printf("AddUser: %s, %d", req.Nickname, req.Age)
+	fmt.Printf("AddUser: %s, %d\n", req.Nickname, req.Age)
 	user, err := s.dao.AddUser(ctx, req.Nickname, req.Age)
 	if err != nil {
 		fmt.Printf("AddUser %s, %d Error", req.Nickname, req.Age)
@@ -74,7 +74,7 @@ func (s *Service) AddUser(ctx context.Context, req *pb.AddReq) (reply *pb.Respon
 
 // DeleteUser 更新用户信息
 func (s *Service) DeleteUser(ctx context.Context, req *pb.DeleteReq) (reply *pb.Response, err error) {
-	fmt.Printf("DeleteUser:  %d", req.Uid)
+	fmt.Printf("DeleteUser:  %d\n", req.Uid)
 	rows, err := s.dao.DeleteUser(ctx, req.Uid)
 	if err != nil {
 		fmt.Printf("DeleteUser Uid = %d Error", req.Uid)
@@ -88,7 +88,7 @@ func (s *Service) DeleteUser(ctx context.Context, req *pb.DeleteReq) (reply *pb.
 
 // UpdateUser 更新用户信息
 func (s *Service) UpdateUser(ctx context.Context, req *pb.UpdateReq) (reply *pb.Response, err error) {
-	fmt.Printf("UpdateUser: %s, %d", req.Nickname, req.Age)
+	fmt.Printf("UpdateUser: %s, %d\n", req.Nickname, req.Age)
 	rows, err := s.dao.UpdateUser(ctx, req.Uid, req.Nickname, req.Age)
 	if err != nil {
 		fmt.Printf("UpdateUser %s, %d Error", req.Nickname, req.Age)
@@ -102,7 +102,7 @@ func (s *Service) UpdateUser(ctx context.Context, req *pb.UpdateReq) (reply *pb.
 
 //GetUser 获取用户信息
 func (s *Service) GetUser(ctx context.Context, req *pb.GetReq) (reply *pb.Response, err error) {
-	fmt.Printf("GetUser: %d", req.Uid)
+	fmt.Printf("GetUser: %d\n", req.Uid)
 	user, err := s.dao.GetUser(ctx, req.Uid)
 	if err != nil {
 		fmt.Printf("GetUser %s Error", req.Uid)

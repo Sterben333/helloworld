@@ -19,13 +19,14 @@ import (
 var Provider = wire.NewSet(New, NewDB, NewRedis, NewMC)
 
 //go:generate kratos tool btsgen
-// Dao dao interface
+// Dao 定义方法的接口
 type Dao interface {
 	Close()
 	Ping(ctx context.Context) (err error)
 	// bts: -nullcache=&model.Article{ID:-1} -check_null_code=$!=nil&&$.ID==-1
 	Article(c context.Context, id int64) (*model.Article, error)
-	//新增接口
+
+	// 新增接口
 	AddUser(c context.Context, nickname string, age int32) (user *model.User, err error)
 	DeleteUser(c context.Context, uid int64) (row int64, err error)
 	UpdateUser(c context.Context, uid int64, nickname string, age int32) (row int64, err error)
