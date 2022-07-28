@@ -41,6 +41,7 @@ service Demo {//请求，远程调用
   rpc AddUser(AddReq) returns (Response) {
     option (google.api.http) = {
       post: "/adduser"
+      body: "*"
     };
   };
   rpc DeleteUser(DeleteReq) returns (Response) {
@@ -51,11 +52,13 @@ service Demo {//请求，远程调用
   rpc UpdateUser(UpdateReq) returns (Response) {
     option (google.api.http) = {
       put: "/updateuser"
+      body: "*"
     };
   };
   rpc GetUser(GetReq) returns (Response) {
     option (google.api.http) = {
       put: "/getuser"
+      body: "*"
     };
   };
   rpc GetUserList(.google.protobuf.Empty) returns (Response) {
@@ -72,8 +75,8 @@ service Demo {//请求，远程调用
         //-----validate：验证器
                 //------required：字段为必填项，值不能为空
 message LoginReq {
-  string username = 1 [(gogoproto.moretags) = 'form:"username" ']; //form-表单username
-  string passwd = 2 [(gogoproto.moretags) = 'form:"passwd" ']; //form-表单passwd
+  string username = 1 [(gogoproto.moretags) = 'form:"username" validate:"required"']; //form-表单username
+  string passwd = 2 [(gogoproto.moretags) = 'form:"passwd" validate:"required"']; //form-表单passwd
 }
 
 //新增登录接口响应参数
@@ -83,25 +86,25 @@ message LoginResp {
 
 //增删改查接口响应参数
 message AddReq {
-  string nickname = 1 [(gogoproto.moretags) = 'form:"nickname" '];
-  int32 age = 2 [(gogoproto.moretags) = 'form:"age" validate:'];
+  string nickname = 1 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
+  int32 age = 2 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
 }
 
 message UpdateReq {
-  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" '];
-  string nickname = 2 [(gogoproto.moretags) = 'form:"nickname" '];
-  int32 age = 3 [(gogoproto.moretags) = 'form:"age" '];
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
+  string nickname = 2 [(gogoproto.moretags) = 'form:"nickname" validate:"required"'];
+  int32 age = 3 [(gogoproto.moretags) = 'form:"age" validate:"required"'];
 }
 
 message DeleteReq {
-  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" '];
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
 }
 
 message GetReq {
-  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" '];
+  int64 uid = 1 [(gogoproto.moretags) = 'form:"uid" validate:"required"'];
 }
 
-message Response {
+message Response{
   string Content = 1 [(gogoproto.jsontag) = 'content'];
 }
 

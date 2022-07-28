@@ -1,6 +1,7 @@
 package http
 
 import (
+	"go-common/library/net/http/blademaster/render"
 	"net/http"
 
 	"go-common/library/conf/paladin.v2"
@@ -53,7 +54,6 @@ func initRouter(e *bm.Engine) {
 		// NOTE: 如/params3/soul/hello/hi，action的值为"/hello/hi"
 		// NOTE: 如/params3/soul/hello/hi/，action的值为"/hello/hi/"
 		g.GET("/param3/:name/*action", showParam)
-		g.POST("/param4/:name/:gender/:say", showParam1)
 	}
 }
 
@@ -63,24 +63,17 @@ func showParam(c *bm.Context) {
 	say, _ := c.Params.Get("say")
 	action, _ := c.Params.Get("action")
 	path := c.RoutePath // NOTE: 获取注册的路由原始地址，如: /httpdemo/param1/:name
-	c.JSONMap(map[string]interface{}{
-		"name":   name,
-		"gender": gender,
-		"say":    say,
-		"action": action,
-		"path":   path,
-	}, nil)
-}
-
-func showParam1(c *bm.Context) {
-	name, _ := c.Params.Get("name")
-	gender, _ := c.Params.Get("gender")
-	say, _ := c.Params.Get("say")
-	path := c.RoutePath // NOTE: 获取注册的路由原始地址，如: /httpdemo/param1/:name
-	out := name + "同学，性别：" + gender + "他说" + say + "。他的路由原始地址为：" + path
-	c.JSONMap(map[string]interface{}{
-		"say": out,
-	}, nil)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data: map[string]interface{}{
+			"name":   name,
+			"gender": gender,
+			"say":    say,
+			"action": action,
+			"path":   path,
+		},
+	})
 }
 
 //engine自带Ping方法，用于设置"/ping"路由的handler，该路由统一提供于负载均衡服务做健康检测。服务是否健康，
@@ -99,5 +92,9 @@ func howToStart(c *bm.Context) {
 		Id:    1,
 		Title: "我是梁志超他奶奶",
 	}
-	c.JSON(k, nil)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    k,
+	})
 }

@@ -58,7 +58,7 @@ func (d *dao) DeleteUser(c context.Context, uid int64) (row int64, err error) {
 		log.Error("db.Exec(%s) error(%v)", deleteSql, err)
 		return 0, err
 	}
-	time.Sleep(2) //睡2s再删除redis
+	time.Sleep(1000) //睡1000纳秒再删除redis
 	flag, _ = redis.Int(d.redis.Do(c, "EXISTS", uid))
 	if flag != 0 {
 		d.redis.Do(c, "DEL", uid)
@@ -84,7 +84,7 @@ func (d *dao) UpdateUser(c context.Context, uid int64, nickname string, age int3
 		return 0, err
 	}
 
-	time.Sleep(2) //睡2s再删除redis
+	time.Sleep(1000) //睡1000纳秒再删除redis
 	flag, _ = redis.Int(d.redis.Do(c, "EXISTS", uid))
 	if flag != 0 {
 		d.redis.Do(c, "DEL", uid)
