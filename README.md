@@ -11,12 +11,12 @@ Kratos v1.0.52
 
 ## 部署步骤
 
-1. Environment
-   
+1. Environment（注意是helloworld/cmd这个里面的环境）
+
     ```LOG_NO_AGENT=true;DEPLOY_ENV=uat```
-    
-1. Program arguments
-   
+
+2. Program arguments（注意是helloworld/cmd这个里面的参数）
+
     ```-conf=./configs```
 
 3. 安装kratos
@@ -79,7 +79,9 @@ Kratos v1.0.52
         └── service.go
 ```
 
+## 项目启动过程
 
+接口api ——> 路由注册server发送到业务层具体的方法 ——> 业务层service ——> dao层操作数据库的方法
 
 ## V1.0 版本内容更新2022.7.26
 
@@ -173,3 +175,21 @@ Kratos v1.0.52
 1. 在增删改查上做了redis中间件的缓存处理，用来优化操作体验
 2. 考虑到更新和删除动作在多线程情况下可能会读取脏数据，本人采用延时双删的策略
 3. 对于查询用户列表的情况，因为这种情况操作不是很多，且数据量巨大，因此本人没有做redis的处理，直接请求数据库即可
+
+## 自定义消息体2022.7.29
+
+在api文件夹用```kratos tool protoc```生成了bm和pb文件后，打开bm文件
+
+将```demoxxx(c *bm.Context)```函数中的```c.JSON(xxxxxx)```改成```c.Render(xxxxxxx)```函数
+
+如下：
+
+```go
+resp, _ := DemoSvc.Login(c, p)
+c.Render(http.StatusOK, render.JSON{
+  Code:    2000,
+  Message: "请求成功",
+  Data:    resp,
+})
+```
+

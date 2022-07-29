@@ -14,6 +14,8 @@ package api
 
 import (
 	"context"
+	"go-common/library/net/http/blademaster/render"
+	"net/http"
 
 	bm "go-common/library/net/http/blademaster"
 	"go-common/library/net/http/blademaster/binding"
@@ -68,8 +70,12 @@ func demoPing(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.Ping(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.Ping(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoSayHello(c *bm.Context) {
@@ -77,8 +83,12 @@ func demoSayHello(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.SayHello(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.SayHello(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoSayHelloURL(c *bm.Context) {
@@ -86,8 +96,12 @@ func demoSayHelloURL(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.SayHelloURL(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.SayHelloURL(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoLogin(c *bm.Context) {
@@ -95,8 +109,12 @@ func demoLogin(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.Login(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.Login(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoAddUser(c *bm.Context) {
@@ -104,8 +122,12 @@ func demoAddUser(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.AddUser(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.AddUser(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoDeleteUser(c *bm.Context) {
@@ -113,8 +135,12 @@ func demoDeleteUser(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.DeleteUser(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.DeleteUser(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoUpdateUser(c *bm.Context) {
@@ -122,8 +148,12 @@ func demoUpdateUser(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.UpdateUser(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.UpdateUser(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoGetUser(c *bm.Context) {
@@ -131,8 +161,12 @@ func demoGetUser(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.GetUser(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.GetUser(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 func demoGetUserList(c *bm.Context) {
@@ -140,8 +174,12 @@ func demoGetUserList(c *bm.Context) {
 	if err := c.BindWith(p, binding.Default(c.Request.Method, c.Request.Header.Get("Content-Type"))); err != nil {
 		return
 	}
-	resp, err := DemoSvc.GetUserList(c, p)
-	c.JSON(resp, err)
+	resp, _ := DemoSvc.GetUserList(c, p)
+	c.Render(http.StatusOK, render.JSON{
+		Code:    2000,
+		Message: "请求成功",
+		Data:    resp,
+	})
 }
 
 // RegisterDemoBMServer Register the blademaster route
